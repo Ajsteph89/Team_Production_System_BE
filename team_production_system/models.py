@@ -89,25 +89,17 @@ class Availability(models.Model):
     def __str__(self):
         return f"{self.mentor}'s available times for {self.start_time.strftime('%A, %b %d, %Y at %I:%M %p')} to {self.end_time.strftime('%A, %b %d, %Y at %I:%M %p')}"
 
-
-# A form for mentees to fill out information about what they need help with when setting up a session.
-# This information will be sent to the mentor that the mentee is scheduling a session with
-class SessionRequestForm(models.Model):
-    user = models.ForeignKey(
-        CustomUser, on_delete=models.CASCADE, related_name='request')
+# The session model allows the mentee to setup a session and allows both mentee and mentor see their sessions they have scheduled
+class Session(models.Model):
+    mentee = models.ForeignKey(
+        Mentee, on_delete=models.CASCADE, related_name='mentee_session')
+    mentor = models.ForeignKey(Mentor, on_delete=models.CASCADE, related_name='mentor_session')
     project = models.CharField(max_length=500)
     help_text = models.TextField(max_length=500)
     git_link = models.URLField(max_length=200)
     created_at = models.DateTimeField(auto_now_add=True)
+    
     confirmed = models.BooleanField(default=False)
-
-
-# The session model allows the mentee to setup a session and allows both mentee and mentor see their sessions they have scheduled
-class Session(models.Model):
-    mentor_availability = models.ForeignKey(
-        Availability, on_delete=models.CASCADE, related_name='mentor_session')
-    mentee = models.ForeignKey(
-        Mentee, on_delete=models.CASCADE, related_name='mentee_session')
     start_time = models.DateTimeField()
     status_choices = [
         ('Pending', 'Pending'),

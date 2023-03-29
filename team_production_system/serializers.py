@@ -70,11 +70,12 @@ class MenteeListSerializer(serializers.ModelSerializer):
                   'last_name', 'is_mentee', 'mentee_profile')
 
 
-# The serializer for the session request form
+# The serializer for the session request from the mentee
 class SessionRequestSerializer(serializers.ModelSerializer):
     class Meta:
-        model = SessionRequestForm
-        fields = ('project', 'help_text', 'git_link', 'confirmed')
+        model = Session
+        fields = ('mentor', 'mentor_availability', 'project', 'help_text', 'git_link')
+        
 
 
 # The mentor avalablity serializer
@@ -84,9 +85,8 @@ class AvailabilitySerializer(serializers.ModelSerializer):
         fields = ('pk', 'mentor', 'start_time', 'end_time')
 
 
-# Serializer to show session information
+# Serializer to show session information for the mentor
 class SessionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Session
-        fields = ('pk', 'mentor_availability', 'mentee',
-                  'start_time', 'status', 'session_length', 'end_time')
+        fields = ('pk', 'mentee', 'start_time', 'status', 'session_length', 'end_time', 'confirmed')

@@ -180,7 +180,7 @@ class AvailabilityView(generics.ListCreateAPIView):
 # View for mentees to submit session request forms.
 # It is set to auto add the user who submited the form as request user.
 class SessionRequestForm(generics.ListCreateAPIView):
-    queryset = SessionRequestForm.objects.all()
+    queryset = Session.objects.all()
     serializer_class = SessionRequestSerializer
     permission_classes = [IsAuthenticated]
 
@@ -188,8 +188,7 @@ class SessionRequestForm(generics.ListCreateAPIView):
         try:
             serializer.save(user=self.request.user)
         except Exception as e:
-            return Response({'error':
-                             'Failed to create session request form. Error: {}'.format(str(e))},
+            return Response({'error': 'Failed to create session request form. Error: {}'.format(str(e))},
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def create(self, request, *args, **kwargs):
